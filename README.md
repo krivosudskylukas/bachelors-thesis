@@ -1,1 +1,1 @@
-# bakalarka
+Android aplikácia, bakalárska práca.
