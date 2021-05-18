@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -42,8 +43,11 @@ public class Graph extends AppCompatActivity {
         mChart.setNoDataText("Please enter the name of microorganizm to show graph :)");
         mChart.setTouchEnabled(true);
         XAxis xAxis = mChart.getXAxis();
+        YAxis yAxis = mChart.getAxisLeft();
+        yAxis.setTextColor(Color.WHITE);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
+        xAxis.setTextColor(Color.WHITE);
 
         Button button = findViewById(R.id.sendMicro);
 
@@ -92,17 +96,14 @@ public class Graph extends AppCompatActivity {
     public void showGrowth(Float first, Double second) {
         TextView growth = findViewById(R.id.growth);
         Double firs = Double.parseDouble(first.toString());
-        Double finalGrowth;
-        finalGrowth = (second - firs) / firs * 100;
+        Double finalGrowth = (second - firs) / firs * 100;;
         growth.setText("Your organism has grown by "+ roundTwoDecimals(finalGrowth) +" %");
     }
 
     public void showChart(ArrayList<Entry> val, String name){
         LineChart mChart = findViewById(R.id.chart);
-
         LineDataSet set1;
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
+        if (mChart.getData() != null && mChart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
             set1.setValues(val);
             mChart.getData().notifyDataChanged();
@@ -111,7 +112,8 @@ public class Graph extends AppCompatActivity {
             set1 = new LineDataSet(val, name);
             set1.enableDashedLine(10f, 5f, 0f);
             set1.enableDashedHighlightLine(10f, 5f, 0f);
-            set1.setColor(Color.DKGRAY);
+            set1.setColor(Color.rgb(255,152,0));
+
             set1.setLineWidth(1f);
 
             if (Utils.getSDKInt() >= 18) {

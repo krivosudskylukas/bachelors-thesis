@@ -81,7 +81,7 @@ public class PickPhoto extends AppCompatActivity {
 
                 /*Imgproc.cvtColor(ImageMat, ImageMat, Imgproc.COLOR_RGB2GRAY);
 
-                //Imgproc.blur(ImageMat,ImageMat,new Size(1,1));
+                Imgproc.blur(ImageMat,ImageMat,new Size(1,1));
 
                 Mat element  = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(15, 15), new Point(0, 0));
 
@@ -91,53 +91,37 @@ public class PickPhoto extends AppCompatActivity {
 
                 Imgproc.threshold(ImageMat, ImageMat, 15, 255, Imgproc.THRESH_BINARY);*/
 
-                //Imgproc.COLOR_RGB2GRAY
+                // Prekonvertovanie farebného obrázku do odtieňov šedej
                 Imgproc.cvtColor(ImageMat, ImageMat, Imgproc.COLOR_RGB2GRAY);
 
-                //Mat element  = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(5, 5), new Point(0, 0));
-                /*Mat element  = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE,  new org.opencv.core.Size(5, 5));
-                Imgproc.morphologyEx(ImageMat, ImageMat, Imgproc.MORPH_TOPHAT, element, new Point(0, 0),10);*/
-
-                Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(15,15));
                 Mat kernelGradient = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(10,10));
-                //Mat kernelik =
-                Imgproc.blur(ImageMat,ImageMat,new Size(12,12));
-                //Imgproc.medianBlur(ImageMat,ImageMat,9);
-                //Imgproc.bilateralFilter(ImageMat,ImageMat,9,75,75);
 
+                // Rozostrenie obrázku aby neboli brané do úvahy malé čiastočky
+                Imgproc.blur(ImageMat,ImageMat,new Size(12,12));
+                Imgproc.GaussianBlur(ImageMat,ImageMat,new Size(5,5),0);
+                
 
                 Imgproc.morphologyEx(ImageMat,ImageMat,Imgproc.MORPH_GRADIENT,kernelGradient, new Point(0,0),3);
 
                 Imgproc.dilate(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(10, 10)),new Point(0,0),2);
 
                 Imgproc.threshold(ImageMat, ImageMat, 20, 255, Imgproc.THRESH_BINARY);
-                //Imgproc.dilate(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(10, 10)),new Point(0,0),2);
+
 
                 Imgproc.morphologyEx(ImageMat,ImageMat,Imgproc.MORPH_CLOSE,Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(15, 15)),new Point(0,0),5);
 
                 Imgproc.morphologyEx(ImageMat,ImageMat,Imgproc.MORPH_OPEN,kernelGradient,new Point(0,0),2);
                 Imgproc.erode(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(15,15)),new Point(0,0),2);
+
+
+                Imgproc.Canny(ImageMat, ImageMat, 5, 5 );
                 //
                 //
                 //
                 /*Imgproc.morphologyEx(ImageMat,ImageMat,Imgproc.MORPH_CLOSE,kernel);*/
 
 
-                //
-                //Imgproc.adaptiveThreshold(ImageMat,ImageMat,255,Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,Imgproc.THRESH_BINARY_INV,5,2);
-                //Imgproc.threshold(ImageMat,ImageMat,0,255,Imgproc.THRESH_OTSU);
-                //Imgproc.dilate(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(10, 10)),new Point(0,0),3);
-                //Imgproc.erode(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(15,15)),new Point(0,0),1);
-                //Imgproc.erode(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(15,15)),new Point(0,0),2);
 
-                //Utils.matToBitmap(ImageMat, bmp32);
-
-
-                //
-
-                /*Imgproc.erode(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2,2)));
-
-                Imgproc.dilate(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2)));*/
 
                 //
                 //
@@ -149,35 +133,7 @@ public class PickPhoto extends AppCompatActivity {
 
 
 
-                /*double minDist = 100;double dp = 1.2d;
-                int minRadius = 0, maxRadius = 0;
-                double param1 = 70, param2 = 72;
-                Mat circles = new Mat(selectedImage.getWidth(), selectedImage.getHeight(), CvType.CV_8UC1);
-                Imgproc.HoughCircles(ImageMat, circles, Imgproc.CV_HOUGH_GRADIENT, dp, minDist, param1, param2, minRadius, maxRadius);
-               // Bitmap bmp = BitmapFactory.decodeStream(imageStream);
-                int numberOfCircles = (circles.rows() == 0) ? 0 : circles.cols();
-                for (int i=0; i<numberOfCircles; i++) {
 
-
-
-                    double[] circleCoordinates = circles.get(0, i);
-
-
-                    int x = (int) circleCoordinates[0], y = (int) circleCoordinates[1];
-
-                    Point center = new Point(x, y);
-
-                    int radius = (int) circleCoordinates[2];
-
-
-                    Imgproc.circle(ImageMat, center, radius, new Scalar(255,
-                            0, 0), 4);
-
-
-                    Imgproc.rectangle(ImageMat, new Point(x - 5, y - 5),
-                            new Point(x + 5, y + 5),
-                            new Scalar(255, 0, 0), -1);
-                }*/
 
 
 
@@ -199,60 +155,38 @@ public class PickPhoto extends AppCompatActivity {
                 //
                 //
 
-                /*Mat cannyOutput = new Mat();
-                Imgproc.Canny(ImageMat, cannyOutput, 100, 100 * 2);
 
-                //Imgproc.findContours(cannyOutput, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-                Mat drawing = Mat.zeros(cannyOutput.size(), CvType.CV_8UC3);
-                double size = 0;
-                for (int i = 0; i < contours.size(); i++) {
-                    Scalar color = new Scalar(0, 255, 255);
-                    if(Imgproc.contourArea(contours.get(i)) > 5000 && Imgproc.contourArea(contours.get(i)) < 500000) {
-                        size += Imgproc.contourArea(contours.get(i));
-                        Imgproc.drawContours(drawing, contours, i, color, 2, Core.LINE_8, hierarchy, 0, new Point());
-                    }
-                }
-                Log.d("rataX", "onActivityResult: "+size);
-                Imgproc.putText(drawing,String.valueOf(size),new Point(10,25),1,1,new Scalar(255,0,0));*/
                 Mat cannyOutput = new Mat();
                 Imgproc.Canny(ImageMat, cannyOutput, 10, 20 );
 
                 //Imgproc.findContours(cannyOutput, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
                 Mat drawing = Mat.zeros(cannyOutput.size(), CvType.CV_8UC3);
                 int idx = 0;
-                int idz = 0;
                 double size = 0;
                 for (int i = 0; i < contours.size(); i++) {
                     Scalar color = new Scalar(255, 0, 255);
                     if(Imgproc.contourArea(contours.get(i)) > size) {
                         size = Imgproc.contourArea(contours.get(i));
                         idx = i;
-                        //Imgproc.drawContours(drawing, contours, i, color, 2, Core.LINE_8, hierarchy, 0, new Point());
                     }
-
-
-
                 }
-                //Imgproc.drawContours(drawing, contours, idx, new Scalar(255, 0, 255), 2, Core.LINE_8, hierarchy, 0, new Point());
 
+
+                int j = 0;
                 double area = 0;
                 for (int i = 0; i < contours.size(); i++) {
-                    Scalar color = new Scalar(255, 0, 255);
-                    double[] contourInfo = hierarchy.get(0, i);
-                    int q = (int)contourInfo[0]; // this gives next sibling
-                    Log.d("TAG", "has child  "+q);
-                    /*if(Imgproc.contourArea(contours.get(i)) < size) {
-                        area += Imgproc.contourArea(contours.get(i));
-                        //idx = i;
+                    /*if(Imgproc.contourArea(contours.get(i)) < 1500){
+                        continue;
                     }*/
-                    //if(q>0){
-                        if(Imgproc.contourArea(contours.get(i)) < size) {
-                            area += Imgproc.contourArea(contours.get(i));
-                            //idx = i;
-                        }
-                        Imgproc.drawContours(drawing, contours, i, color, 2, Core.LINE_8, hierarchy, 0, new Point());
+                    Scalar color = new Scalar(255, 0, 255);
+                    double[] contourInfo = hierarchy.get(0,i);
+                    int q = (int)contourInfo[2]; // this gives next sibling
 
-                    //}
+                    if(q<=0){
+                        Imgproc.drawContours(drawing, contours, i, new Scalar(10 + i * 20, 10 + i * 25, 0), 2, Core.LINE_8, hierarchy, 0, new Point());
+                        area += Imgproc.contourArea(contours.get(i));
+                    }
+
 
                 }
                 /*area = Imgproc.contourArea(contours.get(4));
@@ -261,19 +195,36 @@ public class PickPhoto extends AppCompatActivity {
                 Imgproc.drawContours(drawing, contours, 3, new Scalar(255, 0, 255), 2, Core.LINE_8, hierarchy, 0, new Point());
                 Imgproc.drawContours(drawing, contours, 4, new Scalar(255, 255, 0), 2, Core.LINE_8, hierarchy, 0, new Point());
                 Imgproc.drawContours(drawing, contours, 5, new Scalar(2, 0, 255), 2, Core.LINE_8, hierarchy, 0, new Point());*/
-                Imgproc.fillPoly(ImageMat,contours,new Scalar(255,0,0));
+                //Imgproc.fillPoly(ImageMat,contours,new Scalar(255,0,0));
+
+
+
 
                 double petriArea = Math.PI * 8.8 * 8.8;
 
-                double result = (size/petriArea)*area;
-                Log.d("VYSLEDOK", "OBSAH "+roundTwoDecimals(result));
+
+                double referencePixelCount = size / petriArea;
+
+                double dishSize = size / referencePixelCount;
+
+
+                Log.d("poect pixelov", " misky : "+ size);
+                Log.d("pocet pixelov", "mikroorg : "+ area);
+
+                Log.d("rozmer misky", "Rozmer misky : "+ dishSize);
+                Log.d("petri ", "area: "+petriArea);
+
+                Log.d("pomer", "pomer je: "+roundTwoDecimals(referencePixelCount));
+
+                double result = area / referencePixelCount;
+                Log.d("VYSLEDOK", "OBSAH "+roundTwoDecimals(result/3.5));
 
 
 
-                Log.d("najvacsi", "najvacsi is: "+size);
+                /*Log.d("najvacsi", "najvacsi is: "+size);
                 Log.d("dokopy", "dokopy is: "+area);
                 Log.d("rataX", "ratio is: "+(size/petriArea));
-                Imgproc.putText(drawing,String.valueOf(158),new Point(5,2),1,1,new Scalar(255,0,0));///////////////////////////////////////////////////////////////////
+                Imgproc.putText(drawing,String.valueOf(158),new Point(5,2),1,1,new Scalar(255,0,0));///////////////////////////////////////////////////////////////////*/
 
                 /*int i = 0;
                 for(MatOfPoint cont : contours) {

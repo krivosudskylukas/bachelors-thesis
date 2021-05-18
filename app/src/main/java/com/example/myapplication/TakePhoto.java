@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -32,13 +33,18 @@ public class TakePhoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
-        mImageView = findViewById(R.id.image_view);
         mCaptureBtn = findViewById(R.id.capture_img_btn);
 
         mCaptureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                EditText mikroName = findViewById(R.id.textView);
+                String nameOfTheMicro = mikroName.getText().toString();
+                if(nameOfTheMicro == null){
+                    nameOfTheMicro = "";
+                }
+                dispatchTakePictureIntent(nameOfTheMicro);
+
             }
         });
     }
@@ -50,25 +56,19 @@ public class TakePhoto extends AppCompatActivity {
         if(requestCode != RESULT_CANCELED){
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
                 galleryAddPic();
-                try {
-                    Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    mImageView.setImageBitmap(imageBitmap);
-                }
-                catch (Exception e){
-                    Log.d("TAG", "onActivityResult: "+e);
-                }
-                /**/
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+
             }
         }
     }
 
 
 
-    private File createImageFile() throws IOException {
+    private File createImageFile(String name) throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = name + "_" + timeStamp + "_";
         //Option to save photo to SD-card
         //File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         //Saving photo to gallery
@@ -88,14 +88,14 @@ public class TakePhoto extends AppCompatActivity {
 
 
 
-    private void dispatchTakePictureIntent() {
+    private void dispatchTakePictureIntent(String name) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = createImageFile(name);
             } catch (IOException ex) {
                 // Error occurred while creating the File
             }

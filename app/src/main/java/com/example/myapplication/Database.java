@@ -82,10 +82,12 @@ public class Database extends AppCompatActivity {
                         // This method is called once with the initial value and again whenever data at this location is updated.
                         // Initializing map which holds Values.
 
-                        //Checking if child exist
+                        //Checking if child exist in database
+                        //if yes add the day and measurement into database
                         if(dataSnapshot.hasChild(micro)){
                             myRef.child(micro).child(day).setValue(newValue);
                         }
+                        //if not create a new child and assign values
                         else{
                             myRef.child(micro).setValue(newValue);
                         }

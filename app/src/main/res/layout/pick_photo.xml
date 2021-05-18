@@ -24,7 +24,7 @@
         android:id="@+id/pickPhoto"
         style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_height="75dp"
         android:text="Pick photo from gallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
