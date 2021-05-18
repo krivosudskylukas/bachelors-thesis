@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -48,7 +49,8 @@ public class Graph extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
         xAxis.setTextColor(Color.WHITE);
-
+        Legend legend = mChart.getLegend();
+        legend.setTextColor(Color.WHITE);
         Button button = findViewById(R.id.sendMicro);
 
         button.setOnClickListener(new View.OnClickListener() {

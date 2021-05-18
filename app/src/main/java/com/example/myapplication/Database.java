@@ -1,12 +1,15 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +33,7 @@ public class Database extends AppCompatActivity {
         Button b = findViewById(R.id.send);
         Button button = findViewById(R.id.showButton);
 
-        TextView showAll = findViewById(R.id.showAll);
+
 
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -44,7 +48,7 @@ public class Database extends AppCompatActivity {
                         for (DataSnapshot children : dataSnapshot.getChildren()) {
                             childrens += " " + children.getKey();
                         }
-                        showAll.setText(childrens);
+                        Toast.makeText(Database.this, childrens, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -91,6 +95,10 @@ public class Database extends AppCompatActivity {
                         else{
                             myRef.child(micro).setValue(newValue);
                         }
+                        valueText.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                        Toast.makeText(Database.this, "Successfully saved.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Database.this, MainActivity.class);
+                        startActivity(intent);
                     }
                     @Override
                     public void onCancelled(DatabaseError error) {
@@ -104,8 +112,3 @@ public class Database extends AppCompatActivity {
 }
 
 
-/*if(dataSnapshot.hasChild(micro)){
-    /*for (DataSnapshot child : dataSnapshot.child(micro).getChildren()){
-        map.put(child.getKey(),child.getValue().toString());
-    }
-    map.put(day,newValue);*/

@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -42,10 +43,13 @@ import java.util.Vector;
 public class PickPhoto extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     ImageView image_view;
+    final Double divisonConstant = 3.5;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pick_photo);
+        setContentView(R.layout.pick_from_gallery);
 
 
         Button button = (Button) findViewById(R.id.pickPhoto);
@@ -217,64 +221,36 @@ public class PickPhoto extends AppCompatActivity {
                 Log.d("pomer", "pomer je: "+roundTwoDecimals(referencePixelCount));
 
                 double result = area / referencePixelCount;
-                Log.d("VYSLEDOK", "OBSAH "+roundTwoDecimals(result/3.5));
+                result = result / divisonConstant;
+                Log.d("VYSLEDOK", "OBSAH "+roundTwoDecimals(result));
 
 
 
-                /*Log.d("najvacsi", "najvacsi is: "+size);
-                Log.d("dokopy", "dokopy is: "+area);
-                Log.d("rataX", "ratio is: "+(size/petriArea));
-                Imgproc.putText(drawing,String.valueOf(158),new Point(5,2),1,1,new Scalar(255,0,0));///////////////////////////////////////////////////////////////////*/
 
-                /*int i = 0;
-                for(MatOfPoint cont : contours) {
-                   String s = String.valueOf(Imgproc.contourArea(cont));
-                    Log.d("rata", "onActivityResult: "+s);
-                    //Log.d("rata", "onActivityResult: "+cont.width());
-                    //Imgproc.drawContours(ImageMat,contours, i,new Scalar(255,0,0),2,Imgproc.LINE_4);
-                    i++;
-                }*/
-
-                //double i = Imgproc.contourArea(contours.get(0));
-                //Toast.makeText(this, "Something went wrong", Integer.parseInt(String.valueOf(i))).show();
+                EditText t = findViewById(R.id.textView);
+                EditText dayText = findViewById(R.id.measurementDay);
+                String day = dayText.getText().toString();
+                String micro = t.getText().toString();
 
 
-                /*double maxArea = 0;
-                float[] radius = new float[1];
-                Point center = new Point();
-                for (int i = 0; i < contours.size(); i++) {
-                    MatOfPoint c = contours.get(i);
-                    if (Imgproc.contourArea(c) > maxArea) {
-                        MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
-                        Imgproc.minEnclosingCircle(c2f, center, radius);
-                    }
-                }*/
-                /*  vector<vector<Point> > contours_poly( contours.size() );
-                        vector<Rect> boundRect( contours.size() );
-                    vector<Point2f>center( contours.size() );*/
+                if((day!=null && micro != null) && (!day.trim().isEmpty() && !micro.trim().isEmpty())) {
 
+                    Intent intent = new Intent(PickPhoto.this, AutoSaveInDatabase.class);
 
-                /*Vector<Point> center = new Vector<>(contours.size());
-                Vector<Integer> radius = new Vector<>(contours.size());
-
-                for( int i = 0; i< contours.size(); i++ )
-                {
-                    Scalar color = new Scalar( 255, 255, 255 );
-                    Imgproc.drawContours(ImageMat,contours,i,color);
-                    Imgproc.circle(ImageMat, center.get(i), radius.get(i),color);
-                    /*drawContours( drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
-                    rectangle( drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0 );
-                    circle( drawing, center[i], (int)radius[i], color, 2, 8, 0 );
-                }*/
-                /*Mat canny_output = new Mat();
-                Imgproc.Canny(ImageMat,canny_output,100,200,3);*/
-
-
+                    intent.putExtra("name", micro);
+                    intent.putExtra("day", day);
+                    intent.putExtra("area", String.valueOf(result));
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(PickPhoto.this, MainActivity.class);
+                    startActivity(intent);
+                }
                 ////////////////////////////////////////////////////////////
                 //Utils.matToBitmap(ImageMat, bmp32);
                 Utils.matToBitmap(drawing, bmp32);
                 ////////////////////////////////////////////////////////////
-                image_view.setImageBitmap(bmp32);
+                //image_view.setImageBitmap(bmp32);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
