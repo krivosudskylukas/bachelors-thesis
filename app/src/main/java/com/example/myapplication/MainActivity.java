@@ -31,16 +31,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String TAG = "MainActivity";
 
-    static {
-        if(OpenCVLoader.initDebug()){
-            Log.d(TAG, " SUCCES");
-        }
-        else {
-            Log.d(TAG,"FAILURE");
-        }
-    }
 
 
     @Override

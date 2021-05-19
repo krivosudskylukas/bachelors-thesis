@@ -75,7 +75,7 @@ public class PickPhoto extends AppCompatActivity {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                Log.d("tagicel",imageUri.getPath());
+                //Log.d("tagicel",imageUri.getPath());
 
 
                 Bitmap bmp32 = selectedImage.copy(Bitmap.Config.ARGB_8888, true);
@@ -212,17 +212,17 @@ public class PickPhoto extends AppCompatActivity {
                 double dishSize = size / referencePixelCount;
 
 
-                Log.d("poect pixelov", " misky : "+ size);
+                /*Log.d("poect pixelov", " misky : "+ size);
                 Log.d("pocet pixelov", "mikroorg : "+ area);
 
                 Log.d("rozmer misky", "Rozmer misky : "+ dishSize);
                 Log.d("petri ", "area: "+petriArea);
 
-                Log.d("pomer", "pomer je: "+roundTwoDecimals(referencePixelCount));
+                Log.d("pomer", "pomer je: "+roundTwoDecimals(referencePixelCount));*/
 
                 double result = area / referencePixelCount;
                 result = result / divisonConstant;
-                Log.d("VYSLEDOK", "OBSAH "+roundTwoDecimals(result));
+                //Log.d("VYSLEDOK", "OBSAH "+roundTwoDecimals(result));
 
 
 
