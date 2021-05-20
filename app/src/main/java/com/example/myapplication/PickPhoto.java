@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -79,7 +80,7 @@ public class PickPhoto extends AppCompatActivity {
 
 
                 Bitmap bmp32 = selectedImage.copy(Bitmap.Config.ARGB_8888, true);
-
+                OpenCVLoader.initDebug();
                 Mat ImageMat = new Mat();
                 Utils.bitmapToMat(bmp32, ImageMat);
 
