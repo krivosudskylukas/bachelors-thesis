@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         Button button3 = findViewById(R.id.pickPhoto);
         button3.setOnClickListener(new View.OnClickListener(){
             @Override

@@ -8,16 +8,40 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:src="@drawable/normal_background" />
+    <TextView
+        android:id="@+id/ylabel_id"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        android:rotation="270"
+        android:visibility="invisible"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="-55dp"
+        android:text="Area of microorganism" />
+
+    <TextView
+        android:id="@+id/xlabel_id"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="425dp"
+        android:layout_marginLeft="250dp"
+        android:visibility="invisible"
+        android:text="Day of measurement"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="30dp">
+
+
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart"
             android:layout_width="match_parent"
             android:layout_height="400dp"
            />
+
 
         <EditText
             android:id="@+id/micro"
@@ -29,6 +53,10 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             />
+
+
+
+
 
         <Button
             android:id="@+id/sendMicro"

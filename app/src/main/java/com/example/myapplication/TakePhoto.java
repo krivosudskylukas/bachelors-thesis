@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,7 +44,7 @@ public class TakePhoto extends AppCompatActivity {
                 if(nameOfTheMicro == null){
                     nameOfTheMicro = "";
                 }
-                dispatchTakePictureIntent(nameOfTheMicro);
+                takePicture(nameOfTheMicro);
 
             }
         });
@@ -88,23 +89,17 @@ public class TakePhoto extends AppCompatActivity {
 
 
 
-    private void dispatchTakePictureIntent(String name) {
+    private void takePicture(String name) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
             File photoFile = null;
             try {
                 photoFile = createImageFile(name);
             } catch (IOException ex) {
-                // Error occurred while creating the File
+                Toast.makeText(TakePhoto.this,"Cannot create file.",Toast.LENGTH_SHORT).show();
             }
-            // Continue only if the File was successfully created
             if (photoFile != null) {
-                //get image uri
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.provider",
-                        photoFile);
+                Uri photoURI = FileProvider.getUriForFile(this, "com.example.android.provider",photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }

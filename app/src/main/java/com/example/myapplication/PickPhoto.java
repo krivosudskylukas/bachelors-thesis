@@ -44,7 +44,7 @@ import java.util.Vector;
 public class PickPhoto extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     ImageView image_view;
-    final Double divisonConstant = 3.5;
+    final int divisonConstant = 6500;
 
 
     @Override
@@ -76,95 +76,46 @@ public class PickPhoto extends AppCompatActivity {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                //Log.d("tagicel",imageUri.getPath());
-
 
                 Bitmap bmp32 = selectedImage.copy(Bitmap.Config.ARGB_8888, true);
                 OpenCVLoader.initDebug();
                 Mat ImageMat = new Mat();
                 Utils.bitmapToMat(bmp32, ImageMat);
 
-                /*Imgproc.cvtColor(ImageMat, ImageMat, Imgproc.COLOR_RGB2GRAY);
-
-                Imgproc.blur(ImageMat,ImageMat,new Size(1,1));
-
-                Mat element  = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(15, 15), new Point(0, 0));
-
-                Imgproc.morphologyEx(ImageMat, ImageMat, Imgproc.MORPH_TOPHAT, element, new Point(0, 0));
-
-
-
-                Imgproc.threshold(ImageMat, ImageMat, 15, 255, Imgproc.THRESH_BINARY);*/
-
                 // Prekonvertovanie farebného obrázku do odtieňov šedej
                 Imgproc.cvtColor(ImageMat, ImageMat, Imgproc.COLOR_RGB2GRAY);
-
-                Mat kernelGradient = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(10,10));
 
                 // Rozostrenie obrázku aby neboli brané do úvahy malé čiastočky
                 Imgproc.blur(ImageMat,ImageMat,new Size(12,12));
                 Imgproc.GaussianBlur(ImageMat,ImageMat,new Size(5,5),0);
-                
 
+
+                //Vytvorenie kernelu pre morfologické operácie
+                Mat kernelGradient = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(10,10));
+
+                //Morfologická operácia Gradient
                 Imgproc.morphologyEx(ImageMat,ImageMat,Imgproc.MORPH_GRADIENT,kernelGradient, new Point(0,0),3);
-
+                //Morfologická operácia dilate
                 Imgproc.dilate(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(10, 10)),new Point(0,0),2);
-
+                //Tresholdová operácia
                 Imgproc.threshold(ImageMat, ImageMat, 20, 255, Imgproc.THRESH_BINARY);
-
-
+                //Morfologická operácia close
                 Imgproc.morphologyEx(ImageMat,ImageMat,Imgproc.MORPH_CLOSE,Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(15, 15)),new Point(0,0),5);
-
+                //Morfologická operácia open
                 Imgproc.morphologyEx(ImageMat,ImageMat,Imgproc.MORPH_OPEN,kernelGradient,new Point(0,0),2);
+                //Morfologická operácia erode
                 Imgproc.erode(ImageMat, ImageMat, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(15,15)),new Point(0,0),2);
+                //Algoritmus na hľadanie hrán
+                Imgproc.Canny(ImageMat, ImageMat, 5, 10 );
 
-
-                Imgproc.Canny(ImageMat, ImageMat, 5, 5 );
-                //
-                //
-                //
-                /*Imgproc.morphologyEx(ImageMat,ImageMat,Imgproc.MORPH_CLOSE,kernel);*/
-
-
-
-
-                //
-                //
-                // dilate a erote
-                // FAJNY KOD POTIALTO
-                //
-                //
-                //
-
-
-
-
-
-
-
-
-                //
-                //
-                //          FUNGUJUCI KOD
-                //
-                //
                 List<MatOfPoint> contours = new ArrayList<>();
                 Mat hierarchy = new Mat();
                 Imgproc.findContours(ImageMat, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
 
-
-                //
-                //
-                //          FUNGUJUCI KOD
-                //
-                //
-
-
                 Mat cannyOutput = new Mat();
                 Imgproc.Canny(ImageMat, cannyOutput, 10, 20 );
 
-                //Imgproc.findContours(cannyOutput, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
                 Mat drawing = Mat.zeros(cannyOutput.size(), CvType.CV_8UC3);
                 int idx = 0;
                 double size = 0;
@@ -194,21 +145,14 @@ public class PickPhoto extends AppCompatActivity {
 
 
                 }
-                /*area = Imgproc.contourArea(contours.get(4));
-                size = Imgproc.contourArea(contours.get(2));
-                Imgproc.drawContours(drawing, contours, 2, new Scalar(255, 0, 0), 2, Core.LINE_8, hierarchy, 0, new Point());
-                Imgproc.drawContours(drawing, contours, 3, new Scalar(255, 0, 255), 2, Core.LINE_8, hierarchy, 0, new Point());
-                Imgproc.drawContours(drawing, contours, 4, new Scalar(255, 255, 0), 2, Core.LINE_8, hierarchy, 0, new Point());
-                Imgproc.drawContours(drawing, contours, 5, new Scalar(2, 0, 255), 2, Core.LINE_8, hierarchy, 0, new Point());*/
-                //Imgproc.fillPoly(ImageMat,contours,new Scalar(255,0,0));
 
 
 
 
-                double petriArea = Math.PI * 8.8 * 8.8;
+                double petriArea = Math.PI * 4.4 * 4.4;
 
 
-                double referencePixelCount = size / petriArea;
+                double referencePixelCount = (size / petriArea)-divisonConstant;
 
                 double dishSize = size / referencePixelCount;
 
@@ -222,7 +166,7 @@ public class PickPhoto extends AppCompatActivity {
                 Log.d("pomer", "pomer je: "+roundTwoDecimals(referencePixelCount));*/
 
                 double result = area / referencePixelCount;
-                result = result / divisonConstant;
+
                 //Log.d("VYSLEDOK", "OBSAH "+roundTwoDecimals(result));
 
 

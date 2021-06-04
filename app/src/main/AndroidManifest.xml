@@ -49,20 +49,16 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
-
-
         <activity
             android:name=".Database"
             android:label="Database"
         />
-
         <activity
             android:name=".TakePhoto"
             android:label="Take photo"
             />
-
         <activity
             android:name=".Graph"
             android:label="Show graph"
@@ -75,7 +71,10 @@
             android:name=".AutoSaveInDatabase"
             android:label="AutoSaveInDatabase"
             />
-
+        <activity
+            android:name=".tempPickPhoto"
+            android:label="tempPickPhoto"
+            />
     </application>
 
 

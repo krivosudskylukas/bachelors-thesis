@@ -43,16 +43,19 @@ public class Graph extends AppCompatActivity {
         LineChart mChart = findViewById(R.id.chart);
         mChart.setNoDataText("Please enter the name of microorganizm to show graph :)");
         mChart.setTouchEnabled(true);
-        XAxis xAxis = mChart.getXAxis();
+
         YAxis yAxis = mChart.getAxisLeft();
         yAxis.setTextColor(Color.WHITE);
+
+        XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
         xAxis.setTextColor(Color.WHITE);
+
         Legend legend = mChart.getLegend();
         legend.setTextColor(Color.WHITE);
-        Button button = findViewById(R.id.sendMicro);
 
+        Button button = findViewById(R.id.sendMicro);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +65,10 @@ public class Graph extends AppCompatActivity {
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("");
+
+                TextView xLabel = findViewById(R.id.xlabel_id);
+                TextView yLabel = findViewById(R.id.ylabel_id);
+                TextView growth = findViewById(R.id.growth);
 
                 ArrayList<Entry> val = new ArrayList<>();
                 myRef.addValueEventListener(new ValueEventListener() {
@@ -75,11 +82,17 @@ public class Graph extends AppCompatActivity {
                                 lastValue = Double.parseDouble(children.getValue().toString());
                             }
                             showChart(val,micro);
+                            xLabel.setVisibility(View.VISIBLE);
+                            yLabel.setVisibility(View.VISIBLE);
+                            growth.setVisibility(View.VISIBLE);
                             showGrowth(val.get(0).getY(),lastValue);
                         }
                         else{
                             mChart.clear();
                             mChart.setNoDataText("Your microorganizm does not exist.");
+                            xLabel.setVisibility(View.INVISIBLE);
+                            yLabel.setVisibility(View.INVISIBLE);
+                            growth.setVisibility(View.INVISIBLE);
                         }
                     }
 
@@ -115,6 +128,7 @@ public class Graph extends AppCompatActivity {
             set1.enableDashedLine(10f, 5f, 0f);
             set1.enableDashedHighlightLine(10f, 5f, 0f);
             set1.setColor(Color.rgb(255,152,0));
+            set1.setValueTextColor(Color.WHITE);
 
             set1.setLineWidth(1f);
 
